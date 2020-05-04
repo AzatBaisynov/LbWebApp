@@ -34,4 +34,5 @@ public class UserRoleServiceImpl implements UserRoleService {
         userRole.setUser(user);
         return userRoleRepository.save(userRole);
     }
+
 }
