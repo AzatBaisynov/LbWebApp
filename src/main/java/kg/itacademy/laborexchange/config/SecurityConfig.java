@@ -25,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select login, password, is_active from users where login=?")
-                .authoritiesByUsernameQuery("select u.login, ur.role_name from user_role ur inner join users u on ur.user_id = u.id where u.login=? and u.is_active = 1");
+                .usersByUsernameQuery("select login, password, status from users where login=?")
+                .authoritiesByUsernameQuery("select u.login, ur.role_name from user_role ur inner join users u on ur.user_id = u.id where u.login=? and u.status = 1");
     }
 
     /** Здесь мы настраиваем доступы - какой юзер с РОЛЬЮ по какому ПУТИ какой МЕТОД может отправлять **/
@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/test").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/test/user").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/test").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"test/user/admin").hasRole("ADMIN")
                 .and().csrf().disable();
     }
 

@@ -3,6 +3,7 @@ package kg.itacademy.laborexchange.service;
 import kg.itacademy.laborexchange.entity.User;
 import kg.itacademy.laborexchange.entity.UserRole;
 import kg.itacademy.laborexchange.model.UserAuth;
+import kg.itacademy.laborexchange.model.UserCreateModel;
 import kg.itacademy.laborexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,22 +22,34 @@ public class UserServiceImpl implements UserService {
     private UserRoleService userRoleService;
 
     @Override
-    public User create(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
+    public User create(UserCreateModel userModel) {
+        User user = new User();
+        String encodedPassword = passwordEncoder.encode(userModel.getPassword());
         user.setPassword(encodedPassword);
+        user.setStatus(1);
+        user.setCv(userModel.getCv());
+        user.setLogin(userModel.getLogin());
         user =  userRepository.save(user);
+
         UserRole userRole = new UserRole();
-        userRole.setRoleName("ROLE_ADMIN");
+        userRole.setRoleName("ROLE_USER");
         userRole.setUser(user);
         userRoleService.create(userRole);
+
         return user;
     }
 
     @Override
-    public User createNoRole(User user) {
+    public User createAdmin(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        return userRepository.save(user);
+        User user1 =  userRepository.save(user);
+
+        UserRole userRole = new UserRole();
+        userRole.setRoleName("ROLE_ADMIN");
+        userRole.setUser(user1);
+        userRoleService.create(userRole);
+        return user1;
     }
 
 

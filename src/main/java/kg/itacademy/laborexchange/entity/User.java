@@ -29,5 +29,8 @@ public class User extends  EntityBase{
     @Column(name = "status", nullable = false)
     private Integer status;
 
-
+    @Override
+    public String toString(){
+        return this.login;
+    }
 }

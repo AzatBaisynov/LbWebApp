@@ -2,6 +2,8 @@ package kg.itacademy.laborexchange.controller;
 
 import kg.itacademy.laborexchange.entity.User;
 import kg.itacademy.laborexchange.model.UserAuth;
+import kg.itacademy.laborexchange.model.UserChangePassModel;
+import kg.itacademy.laborexchange.model.UserCreateModel;
 import kg.itacademy.laborexchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user){
+    public User create(@RequestBody UserCreateModel user){
         return userService.create(user);
     }
 
@@ -42,5 +44,16 @@ public class UserController {
     public User getByToken(Principal principal) {
         String login = principal.getName();
         return userService.getByLogin(login);
+    }
+
+    @PostMapping("/admin")
+    public User create(@RequestBody User user) { return userService.createAdmin(user); }
+
+    @PutMapping("/admin")
+    public User changePassword(@RequestBody UserChangePassModel req, Principal principal){
+        String login = principal.getName();
+        User user = userService.getByLogin(login);
+        user.setPassword(req.getPass());
+        return userService.createAdmin(user);
     }
 }
