@@ -1,6 +1,7 @@
 package kg.itacademy.laborexchange.controller;
 
 import kg.itacademy.laborexchange.entity.Services;
+import kg.itacademy.laborexchange.model.ServicesModel;
 import kg.itacademy.laborexchange.service.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +14,14 @@ public class ServicesController {
     @Autowired
     private ServicesService servicesService;
 
-    @PostMapping
+    @PostMapping("/old")
     public Services create(@RequestBody Services services) {
         return servicesService.create(services);
     }
-
+@PostMapping
+public Services create(@RequestBody ServicesModel servicesModel){
+        return servicesService.create(servicesModel);
+}
     @GetMapping
     public List<Services> getAll() {
         return servicesService.getAll();
