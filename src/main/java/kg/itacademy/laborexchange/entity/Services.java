@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,9 +23,9 @@ public class Services extends EntityBase{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "service_types_id", nullable = false)
-    private List<ServiceTypes> serviceTypes;
+    private ServiceTypes serviceTypes;
     @Column(name = "status", nullable = false)
     private Integer status;
 }

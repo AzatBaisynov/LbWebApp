@@ -3,7 +3,8 @@ package kg.itacademy.laborexchange.controller;
 import kg.itacademy.laborexchange.entity.User;
 import kg.itacademy.laborexchange.model.UserAuth;
 import kg.itacademy.laborexchange.model.UserChangePassModel;
-import kg.itacademy.laborexchange.model.UserCreateModel;
+import kg.itacademy.laborexchange.model.UserClientModel;
+import kg.itacademy.laborexchange.model.UserWorkerModel;
 import kg.itacademy.laborexchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/test/user")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -29,8 +30,13 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PostMapping
-    public User create(@RequestBody UserCreateModel user){
+    @PostMapping("/worker")
+    public User create(@RequestBody UserWorkerModel user){
+        return userService.create(user);
+    }
+
+    @PostMapping("/client")
+    public User create(@RequestBody UserClientModel user) {
         return userService.create(user);
     }
 

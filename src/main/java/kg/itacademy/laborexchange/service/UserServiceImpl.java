@@ -3,7 +3,8 @@ package kg.itacademy.laborexchange.service;
 import kg.itacademy.laborexchange.entity.User;
 import kg.itacademy.laborexchange.entity.UserRole;
 import kg.itacademy.laborexchange.model.UserAuth;
-import kg.itacademy.laborexchange.model.UserCreateModel;
+import kg.itacademy.laborexchange.model.UserClientModel;
+import kg.itacademy.laborexchange.model.UserWorkerModel;
 import kg.itacademy.laborexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private UserRoleService userRoleService;
 
     @Override
-    public User create(UserCreateModel userModel) {
+    public User create(UserWorkerModel userModel) {
         User user = new User();
         String encodedPassword = passwordEncoder.encode(userModel.getPassword());
         user.setPassword(encodedPassword);
@@ -36,6 +37,21 @@ public class UserServiceImpl implements UserService {
         userRole.setUser(user);
         userRoleService.create(userRole);
 
+        return user;
+    }
+
+    @Override
+    public User create(UserClientModel userModel) {
+        User user = new User();
+        String encodedPassword = passwordEncoder.encode(userModel.getPassword());
+        user.setPassword(encodedPassword);
+        user.setStatus(1);
+        user.setLogin(userModel.getLogin());
+        user =  userRepository.save(user);
+        UserRole userRole = new UserRole();
+        userRole.setRoleName("ROLE_CLIENT");
+        userRole.setUser(user);
+        userRoleService.create(userRole);
         return user;
     }
 
