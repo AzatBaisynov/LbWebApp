@@ -13,15 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
-/** Конфигурация Security **/
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
-    /** Здесь мы настраиваем пользователей - их логин, пароль и РОЛЬ **/
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
@@ -29,19 +27,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select u.login, ur.role_name from user_role ur inner join users u on ur.user_id = u.id where u.login=? and u.status = 1");
     }
 
-    /** Здесь мы настраиваем доступы - какой юзер с РОЛЬЮ по какому ПУТИ какой МЕТОД может отправлять **/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/test").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/test").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/user").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/test").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT," /user/admin").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/services").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/services").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/services").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/services").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST, "/test").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/test").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/user").hasRole("USER")
+//                .antMatchers(HttpMethod.DELETE, "/test").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT," /user/admin").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.PUT, "/services").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/services").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.GET, "/services").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST, "/services").hasRole("ADMIN")
                 .and().csrf().disable();
     }
 
